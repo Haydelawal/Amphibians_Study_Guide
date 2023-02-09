@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.amphibians.R
 import com.example.amphibians.databinding.FragmentAmphibianListBinding
@@ -33,16 +34,24 @@ class AmphibianListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         val binding = FragmentAmphibianListBinding.inflate(inflater)
         // TODO: call the view model method that calls the amphibians api
+//
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+
         binding.recyclerView.adapter = AmphibianListAdapter(AmphibianListener { amphibian ->
             viewModel.onAmphibianClicked(amphibian)
             findNavController()
                 .navigate(R.id.action_amphibianListFragment_to_amphibianDetailFragment)
         })
+
+        viewModel.getAmphibianList()
+
+
 
         // Inflate the layout for this fragment
         return binding.root
